@@ -50,7 +50,6 @@ public class DailyTradingImpl implements DailyTrading {
 
 		settleMain.createDailyTrading(file);
 		
-		settleMain.createreports();
 	}
 
 	@Override
@@ -71,6 +70,14 @@ public class DailyTradingImpl implements DailyTrading {
 						Double.valueOf(dataItems[1]), Double.valueOf(dataItems[2]), LocalDate.parse(dataItems[3]),
 						LocalDate.parse(dataItems[4]), dataItems[5], dataItems[6], dataItems[7]));
 			}
+			
+
+			// output all incoming(SELL) and outgoing(BUY) transactions
+			TradingReport.outputBuyAndSellTransactions();
+
+			// print Trade ranking for either a buy and sell
+			TradingReport.sortMapByValues(DailyTradingBuilder.USDSettledRanking);
+
 
 		} catch (IOException e) {
 			log.error("Trade Data could not be processed with exception {}", e.getCause());
@@ -78,16 +85,6 @@ public class DailyTradingImpl implements DailyTrading {
 			throw new DailyTradingCustomException("Got Exception while reading the file", e.getCause());
 		}
 		System.exit(0);
-	}
-
-	protected void createreports() {
-
-		// output all incoming(SELL) and outgoing(BUY) transactions
-		TradingReport.outputBuyAndSellTransactions();
-
-		// print Trade ranking for either a buy and sell
-		TradingReport.sortMapByValues(DailyTradingBuilder.USDSettledRanking);
-
 	}
 
 	// Created a private static method that creates and returns the new object
