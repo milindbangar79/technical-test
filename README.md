@@ -1,6 +1,6 @@
 # Technical Test
 
-This repository contains the sample code for technical test.
+This repository contains the code for technical test.
 
 # Project Run Options
 
@@ -31,9 +31,12 @@ java DailyTradingImpl "tradedata.txt"
 
 # Project Test Coverage Report
 
+<img width="749" alt="screenshot 2019-03-04 at 02 31 16" src="https://user-images.githubusercontent.com/7010363/53701691-a38ab780-3e25-11e9-8f6a-c15dd7d1f50f.png">
+
 
 # Project SonarLint Report
 
+<img width="980" alt="screenshot 2019-03-04 at 02 18 08" src="https://user-images.githubusercontent.com/7010363/53701472-de8beb80-3e23-11e9-9107-de5bd19c1637.png">
 
 # Notes
 
