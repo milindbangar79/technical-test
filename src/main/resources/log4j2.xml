@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+	<Properties>
+		<!--<Property name="PATTERN_LAYOUT">[%-5level] %d{dd-MM-yyyy HH:mm:ss.SSSZ} [%t] %c{1}</Property>-->
+		<Property name="PATTERN_LAYOUT">%d{dd-MM-yyyy}</Property>
+	</Properties>
+
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="${PATTERN_LAYOUT} - %msg%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="info" additivity="false">
+			<appender-ref ref="console" />
+		</Root>
+	</Loggers>
+</Configuration>
