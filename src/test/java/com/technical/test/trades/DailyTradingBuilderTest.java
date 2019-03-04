@@ -70,7 +70,7 @@ public class DailyTradingBuilderTest {
 				assertTrue(model2.equals(i.getArgument(0)));
 				 new DailyTradingBuilder().buildTradeDetails(model2);
 				return null;
-			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);;
+			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);
 		} catch (DailyTradingCustomException e) {
 			e.getCause();
 		}
@@ -88,9 +88,9 @@ public class DailyTradingBuilderTest {
 		try {
 			doAnswer((i) -> {
 				assertTrue(model3.equals(i.getArgument(0)));
-				 new DailyTradingBuilder().buildTradeDetails(model2);;
+				 new DailyTradingBuilder().buildTradeDetails(model2);
 				return null;
-			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);;
+			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);
 		} catch (DailyTradingCustomException e) {
 			e.getCause();
 		}
