@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.technical.test.trades;
 
 import java.io.BufferedReader;
@@ -22,7 +19,7 @@ import com.technical.test.model.DailyTradingModel;
  * @inheritDoc 
  * @throws DailyTradingCustomException
  */
-public class DailyTradingImpl implements DailyTrading {
+public class DailyTradingController implements DailyTrading {
 
 	private static final Logger log = LogManager.getLogger();
 
@@ -30,7 +27,7 @@ public class DailyTradingImpl implements DailyTrading {
 
 	private static String fileName;
 
-	protected DailyTradingImpl() {
+	protected DailyTradingController() {
 	}
 
 	public static void main(String[] args) throws DailyTradingCustomException {
@@ -44,11 +41,11 @@ public class DailyTradingImpl implements DailyTrading {
 			throw new DailyTradingCustomException("No argument(s) provided");
 		}
 
-		DailyTradingImpl settleMain = new DailyTradingImpl();
+		DailyTradingController dailyTradeController = new DailyTradingController();
 
-		File file = settleMain.getFile(fileName);
+		File file = dailyTradeController.getFile(fileName);
 
-		settleMain.createDailyTrading(file);
+		dailyTradeController.createDailyTrading(file);
 		
 	}
 
@@ -66,7 +63,7 @@ public class DailyTradingImpl implements DailyTrading {
 				dataItems = readTradeData.split(DOUBLECOLON_SPLIT);
 				DailyTradingBuilder tradingBuilder = new DailyTradingBuilder();
 
-				tradingBuilder.calculateTradeAmount(new DailyTradingModel(Double.valueOf(dataItems[0]),
+				tradingBuilder.buildTradeDetails(new DailyTradingModel(Double.valueOf(dataItems[0]),
 						Double.valueOf(dataItems[1]), Double.valueOf(dataItems[2]), LocalDate.parse(dataItems[3]),
 						LocalDate.parse(dataItems[4]), dataItems[5], dataItems[6], dataItems[7]));
 			}
@@ -76,7 +73,7 @@ public class DailyTradingImpl implements DailyTrading {
 			TradingReport.outputBuyAndSellTransactions();
 
 			// print Trade ranking for either a buy and sell
-			TradingReport.sortMapByValues(DailyTradingBuilder.USDSettledRanking);
+			TradingReport.outputRankByTrades(DailyTradingBuilder.USDSettledRanking);
 
 
 		} catch (IOException e) {
@@ -93,6 +90,6 @@ public class DailyTradingImpl implements DailyTrading {
 	// method.
 	// Added a protected static property that could be used to store an instance
 
-	protected static DailyTradingImpl instance = null;
+	protected static DailyTradingController instance = null;
 
 }

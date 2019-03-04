@@ -1,9 +1,6 @@
-/**
- * Currently no Licence information 
- */
 package com.technical.test.trades;
 
-import java.text.DecimalFormat;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -24,8 +21,6 @@ public class DailyTradingBuilder {
 
 	private static final Logger log = LogManager.getLogger();
 
-	static DecimalFormat dformat = new DecimalFormat("####0.00");
-
 	private static final double EXISTING_USD_AMOUNT_TRADE = 0.00;
 
 	// HashMap to set the incoming, outgoing . Sort/Rank the settlements
@@ -38,7 +33,7 @@ public class DailyTradingBuilder {
 	 * @param settlementModel
 	 * @throws DailyTradingCustomException
 	 */
-	public void calculateTradeAmount(DailyTradingModel settlementModel) throws DailyTradingCustomException {
+	public void buildTradeDetails(DailyTradingModel settlementModel) throws DailyTradingCustomException {
 
 		try {
 

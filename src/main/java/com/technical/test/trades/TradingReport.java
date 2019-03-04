@@ -23,11 +23,11 @@ import org.apache.logging.log4j.Logger;
  */
 public class TradingReport {
 	
-private static final Logger log = LogManager.getLogger();
+	private static final Logger log = LogManager.getLogger();
 	
 	private static final String AMOUNT_STATEMENT = " and amount is $";
 	
-	static DecimalFormat dformat = new DecimalFormat("####0.00");
+	private static DecimalFormat dformat = new DecimalFormat("####0.00");
 	
 	private TradingReport(){}
 	
@@ -65,7 +65,7 @@ private static final Logger log = LogManager.getLogger();
 	 * @param Settlements.USDSettledRanking
 	 * To print the Settlements for Buy and Sell across dates and rank them in descending order
 	 */
-	public static void sortMapByValues(Map<String, Double> rankMap) {
+	public static void outputRankByTrades(Map<String, Double> rankMap) {
 
 		log.debug("Create the output for ranking the transactions");
 

@@ -13,6 +13,8 @@ import java.time.LocalDate;
  *          Would have used Lombok library , which could have helped in avoiding
  *          to use the boiler plate code, due to issue with latest release of
  *          the library
+ *          
+ *          Only Getters are generated as per the requirement
  */
 
 public class DailyTradingModel {
@@ -24,7 +26,9 @@ public class DailyTradingModel {
 	private LocalDate instructionDate;
 	private String entityName;
 	private String transactionType;
-	private String currencyType;
+	// Currency library provided by Java complying to ISO 4217 can also be used for getting the currency definition of passed code
+	// Can be used to validate the decimal fraction allowed for different currencies e.g. AED is 2
+	private String currencyType; 
 
 	public DailyTradingModel(Double pricePerUnit, Double units, Double agreedFX, LocalDate originalSettlementDate,LocalDate instructionDate,
 			String entityName, String transactionType, String currencyType) {

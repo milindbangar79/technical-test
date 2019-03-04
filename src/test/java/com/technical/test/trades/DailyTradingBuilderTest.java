@@ -46,7 +46,7 @@ public class DailyTradingBuilderTest {
 			doAnswer((i) -> {
 				assertTrue(model1.equals(i.getArgument(0)));
 				return null;
-			}).when(mockDailyTradingBuilder).calculateTradeAmount(model1);
+			}).when(mockDailyTradingBuilder).buildTradeDetails(model1);
 		} catch (DailyTradingCustomException e) {
 			e.getCause();
 		}
@@ -56,9 +56,9 @@ public class DailyTradingBuilderTest {
 	@Test
 	public void testDailyTradeWhenNoDataProvided() throws DailyTradingCustomException{
 		
-		doThrow(DailyTradingCustomException.class).when(mockDailyTradingBuilder).calculateTradeAmount(null);
+		doThrow(DailyTradingCustomException.class).when(mockDailyTradingBuilder).buildTradeDetails(null);
 		
-		assertThrows(DailyTradingCustomException.class, () -> mockDailyTradingBuilder.calculateTradeAmount(null));
+		assertThrows(DailyTradingCustomException.class, () -> mockDailyTradingBuilder.buildTradeDetails(null));
 		
 	}
 	
@@ -68,9 +68,9 @@ public class DailyTradingBuilderTest {
 		try {
 			doAnswer((i) -> {
 				assertTrue(model2.equals(i.getArgument(0)));
-				 new DailyTradingBuilder().calculateTradeAmount(model2);
+				 new DailyTradingBuilder().buildTradeDetails(model2);
 				return null;
-			}).when(mockDailyTradingBuilder).calculateTradeAmount(model2);
+			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);;
 		} catch (DailyTradingCustomException e) {
 			e.getCause();
 		}
@@ -88,9 +88,9 @@ public class DailyTradingBuilderTest {
 		try {
 			doAnswer((i) -> {
 				assertTrue(model3.equals(i.getArgument(0)));
-				 new DailyTradingBuilder().calculateTradeAmount(model3);
+				 new DailyTradingBuilder().buildTradeDetails(model2);;
 				return null;
-			}).when(mockDailyTradingBuilder).calculateTradeAmount(model3);
+			}).when(mockDailyTradingBuilder).buildTradeDetails(model2);;
 		} catch (DailyTradingCustomException e) {
 			e.getCause();
 		}
@@ -103,7 +103,7 @@ public class DailyTradingBuilderTest {
 	
 	@Test(expected=DailyTradingCustomException.class)
 	public void testForNullTradeData() throws DailyTradingCustomException{
-		new DailyTradingBuilder().calculateTradeAmount(model4);
+		new DailyTradingBuilder().buildTradeDetails(model4);
 	}
 	
 
