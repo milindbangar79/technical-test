@@ -28,7 +28,7 @@ java DailyTradingImpl "tradedata.txt"
 
 # Project Class Diagram
 
-![tradeclassdiagramv1 0](https://user-images.githubusercontent.com/7010363/53719827-22fba380-3e85-11e9-8eea-a073283bbe08.png)
+![tradeclassdiagram](https://user-images.githubusercontent.com/7010363/53756553-67b42880-3edf-11e9-9ca5-d842cc978144.png)
 
 # Project Test Coverage Report
 
