@@ -95,8 +95,6 @@ public class TradingReport {
 		
 		consoleRankOutput.printf(format, type,AMOUNT_STATEMENT,tradeValue);
 		
-		consoleRankOutput.flush();
-		
 	}
 
 	private static void writedataToConsole(String date, Double value,String transactionType){
