@@ -1,13 +1,11 @@
 package com.technical.test.trades;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.technical.test.exception.DailyTradingCustomException;
 import com.technical.test.model.DailyTradingModel;
@@ -19,14 +17,14 @@ import com.technical.test.model.DailyTradingModel;
  */
 public class DailyTradingBuilder {
 
-	private static final Logger log = LogManager.getLogger();
+	private static final Logger log = Logger.getLogger(DailyTradingBuilder.class.getName());
 
 	private static final double EXISTING_USD_AMOUNT_TRADE = 0.00;
 
 	// HashMap to set the incoming, outgoing . Sort/Rank the settlements
-	protected static final Map<String, Double> USDSettledIncoming = new HashMap<>();
-	protected static final Map<String, Double> USDSettledOutgoing = new HashMap<>();
-	protected static final Map<String, Double> USDSettledRanking = new HashMap<>();
+	static final Map<String, Double> USDSettledIncoming = new HashMap<>();
+	static final Map<String, Double> USDSettledOutgoing = new HashMap<>();
+	static final Map<String, Double> USDSettledRanking = new HashMap<>();
 
 	/**
 	 * 
@@ -50,10 +48,11 @@ public class DailyTradingBuilder {
 					settlementModel.getOriginalSettlementDate());
 
 			// Update Map objects for Incoming, Outgoing and Ranking
-			setTradeAmountsBasedOnBuyOrSell(settlementDate, usdAmountTrade, settlementModel.getTransactionType(),settlementModel.getEntityName());
+			setTradeAmountsBasedOnBuyOrSell(settlementDate, usdAmountTrade, settlementModel.getTransactionType(),
+					settlementModel.getEntityName());
 
 		} catch (Exception e) {
-			log.error("No Trade Data Available");
+			log.fine("No Trade Data Available");
 			throw new DailyTradingCustomException("No Trade Data Available", e.getCause());
 		}
 
@@ -65,16 +64,16 @@ public class DailyTradingBuilder {
 	 * @param settlementDate
 	 * @return dateBasedonWeekDay
 	 */
-	private static LocalDate getSettlementDateBasedOnWorkdayOfWeek(String currency, LocalDate localDate) {
+	private LocalDate getSettlementDateBasedOnWorkdayOfWeek(String currency, LocalDate localDate) {
 
 		LocalDate dateBasedonWeekDay = localDate;
 
-		log.debug("Date Passed To Check for working day and/or weekend is {}", localDate);
+		log.finer("Date Passed To Check for working day and/or weekend is " + localDate);
 
 		// Check for settlement to be done between Sunday to Thursday for
 		// currency types AED and SGP
 
-		if ("AED".equals(currency) || "SGP".equals(currency)) {
+		if ("AED".equals(currency) || "SAR".equals(currency)) {
 
 			if (localDate.getDayOfWeek().toString().equals("FRIDAY")) {
 
@@ -87,14 +86,14 @@ public class DailyTradingBuilder {
 		} else { // Check for settlement to be done between Monday to Friday
 			if (localDate.getDayOfWeek().toString().equals("SATURDAY")) {
 
-				dateBasedonWeekDay = localDate.plusDays(1);
+				dateBasedonWeekDay = localDate.plusDays(2);
 
 			} else if (localDate.getDayOfWeek().toString().equals("SUNDAY")) {
 
 				dateBasedonWeekDay = localDate.plusDays(1);
 			}
 		}
-		
+
 		return dateBasedonWeekDay;
 	}
 
@@ -106,22 +105,23 @@ public class DailyTradingBuilder {
 	 *            USDSettledRanking HashMap will be set based on different
 	 *            transaction type to provide output for settled trades
 	 */
-	private static void setTradeAmountsBasedOnBuyOrSell(LocalDate settlementDate, Double usdAmountTrade,
-			String transactionType,String entityName) {
+	private void setTradeAmountsBasedOnBuyOrSell(LocalDate settlementDate, Double usdAmountTrade,
+			String transactionType, String entityName) {
 
-		log.debug("Settlement for Outgoing and Incoming is set with date {} , trade amount {} and transaction type {}",
-				settlementDate, usdAmountTrade, transactionType);
+				log.log(Level.FINER,
+						"Settlement for Outgoing and Incoming is set with date {0} , trade amount {1} and transaction type {2}",
+						new Object[]{settlementDate, usdAmountTrade, transactionType});
 
 		// Initialise to set the default value. Add this value to calculated
 		// trade amount for existing settlement date
-		double existingUsdAmountTrade;
+		double existingUsdAmountTrade = EXISTING_USD_AMOUNT_TRADE;
 
-		String europeanDatePattern = "dd/MMM/yyyy";
+		String europeanDatePattern = "dd MMM yyyy";
 		DateTimeFormatter europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
 
 		// B –> BUY –> outgoing trade
 		// S –> SELL –> incoming trade
-		if ("BUY".equals(transactionType)) {
+		if ("B".equals(transactionType)) {
 			// add to outgoing settlement
 			if (USDSettledOutgoing.containsKey(europeanDateFormatter.format(settlementDate))) {
 
@@ -129,15 +129,13 @@ public class DailyTradingBuilder {
 
 				USDSettledOutgoing.put(europeanDateFormatter.format(settlementDate),
 						usdAmountTrade + existingUsdAmountTrade);
-				existingUsdAmountTrade = EXISTING_USD_AMOUNT_TRADE;
 			} else {
 				USDSettledOutgoing.put(europeanDateFormatter.format(settlementDate), usdAmountTrade);
 			}
-			USDSettledRanking.put(entityName + " on " + europeanDateFormatter.format(settlementDate) + " BUY ", usdAmountTrade);
-			
-			existingUsdAmountTrade = EXISTING_USD_AMOUNT_TRADE;
+			USDSettledRanking.put(entityName + " on " + europeanDateFormatter.format(settlementDate) + " BUY ",
+					usdAmountTrade);
 
-		} else if ("SELL".equals(transactionType)) {
+		} else if ("S".equals(transactionType)) {
 
 			// otherwise add to incoming settlement
 			if (USDSettledIncoming.containsKey(europeanDateFormatter.format(settlementDate))) {
@@ -147,12 +145,11 @@ public class DailyTradingBuilder {
 				USDSettledIncoming.put(europeanDateFormatter.format(settlementDate),
 						usdAmountTrade + existingUsdAmountTrade);
 
-				existingUsdAmountTrade = EXISTING_USD_AMOUNT_TRADE;
 			} else {
 				USDSettledIncoming.put(europeanDateFormatter.format(settlementDate), usdAmountTrade);
 			}
-			USDSettledRanking.put(entityName + " on " + europeanDateFormatter.format(settlementDate) + " SELL ", usdAmountTrade);
-			existingUsdAmountTrade = EXISTING_USD_AMOUNT_TRADE;
+			USDSettledRanking.put(entityName + " on " + europeanDateFormatter.format(settlementDate) + " SELL ",
+					usdAmountTrade);
 		}
 
 	}

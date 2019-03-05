@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 import com.technical.test.exception.DailyTradingCustomException;
 import com.technical.test.model.DailyTradingModel;
@@ -20,19 +18,20 @@ import com.technical.test.model.DailyTradingModel;
  * @throws DailyTradingCustomException
  */
 public class DailyTradingController implements DailyTrading {
-
-	private static final Logger log = LogManager.getLogger();
+	
+	private static final Logger log = Logger.getLogger(DailyTradingController.class.getName());
 
 	private static final String DOUBLECOLON_SPLIT = "::";
 
-	private static String fileName;
 
 	protected DailyTradingController() {
 	}
 
 	public static void main(String[] args) throws DailyTradingCustomException {
 
-		log.debug("Instantiate Sample Data for Settlements Including Buy or Sell");
+		log.finer("Instantiate Sample Data for Settlements Including Buy or Sell");
+		
+		String fileName;
 
 		if (args.length > 0) {
 			fileName = args[0]; // consolidated incoming file from entities foo
@@ -77,7 +76,7 @@ public class DailyTradingController implements DailyTrading {
 
 
 		} catch (IOException e) {
-			log.error("Trade Data could not be processed with exception {}", e.getCause());
+			log.fine("Trade Data could not be processed with exception" + e.getCause());
 			System.exit(1);
 			throw new DailyTradingCustomException("Got Exception while reading the file", e.getCause());
 		}

@@ -3,71 +3,66 @@
  */
 package com.technical.test.trades;
 
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
- * @author milindbangar
- * Static helper class to print the results of Trades for entities foo and bar and rank the trade in descending order for Buy and Sell 
- * transactions
+ * @author milindbangar Static helper class to print the results of Trades for
+ *         entities foo and bar and rank the trade in descending order for Buy
+ *         and Sell transactions
  */
 public class TradingReport {
 	
-	private static final Logger log = LogManager.getLogger();
-	
-	private static final String AMOUNT_STATEMENT = " and amount is $";
-	
+	private static final Logger logger = Logger.getLogger(TradingReport.class.getName());
+
+	private static final String AMOUNT_STATEMENT = " Amount in $";
+
 	private static DecimalFormat dformat = new DecimalFormat("####0.00");
+
+	private TradingReport() {
+	}
 	
-	private TradingReport(){}
 	
 	/*
 	 * Method to print the different transactions based on trade data received
 	 */
-	public static void outputBuyAndSellTransactions(){
-		
-		log.info("### Outgoing USD Settlements ###");
+	public static void outputBuyAndSellTransactions() {
 
 		for (Entry<String, Double> entry : DailyTradingBuilder.USDSettledOutgoing.entrySet()) {
 			String date = entry.getKey();
 			Double value = entry.getValue();
-
-			log.info("Settlement Date is " + date + AMOUNT_STATEMENT + dformat.format(value));
+			
+			writedataToConsole(date,value,"B");
 		}
-
-		log.info("### End of Outgoing USD Settlements ###");
-		
-		log.info("---------------------------------");
-
-		log.info("### Incoming USD Settlements ###");
 
 		for (Entry<String, Double> entry : DailyTradingBuilder.USDSettledIncoming.entrySet()) {
 			String date = entry.getKey();
 			Double value = entry.getValue();
-			log.info("Settlement Date is " + date + AMOUNT_STATEMENT + dformat.format(value));
+			
+			writedataToConsole(date,value,"S");	
 		}
 
-		log.info("End of Incoming USD Settlements");
 	}
-	
+
+
 	/**
 	 * 
 	 * @param Settlements.USDSettledRanking
-	 * To print the Settlements for Buy and Sell across dates and rank them in descending order
+	 *            To print the Settlements for Buy and Sell across dates and
+	 *            rank them in descending order
 	 */
 	public static void outputRankByTrades(Map<String, Double> rankMap) {
-
-		log.debug("Create the output for ranking the transactions");
+		
+		logger.finer("Create the output for ranking the transactions");
 
 		Set<Entry<String, Double>> mapEntries = rankMap.entrySet();
 
@@ -82,22 +77,35 @@ public class TradingReport {
 				return element2.getValue().compareTo(element1.getValue());
 			}
 		});
-
-		// Store the list into Linked HashMap to preserve the order of
-		// insertion.
-		Map<String, Double> rankingMap = new LinkedHashMap<>();
-		for (Entry<String, Double> entry : rankingList) {
-			rankingMap.put(entry.getKey(), entry.getValue());
-		}
-
-		// Print values after sorting of map
-		log.info("###### Ranking of USD Settlements by descending order #####            ");
-
-		for (Entry<String, Double> entry : rankingMap.entrySet()) {
-			log.info("TransactionType ::: " + entry.getKey() + AMOUNT_STATEMENT + dformat.format(entry.getValue()));
-		}
 		
-		log.info("##### End of Ranking of USD Settlements #####            ");
+		for (Entry<String, Double> entry : rankingList) {
+			String type = entry.getKey();
+			String value = dformat.format(entry.getValue());
+			// Print values after sorting of map
+			writeTradeRankingDataToConsole(type,value);
+		}
+
+	}
+	
+	private static void writeTradeRankingDataToConsole(String type, String tradeValue) {
+		
+		PrintWriter consoleRankOutput = new PrintWriter(System.out,true);
+		
+		String format = "Transaction Type ::: %s, %s, %s\n" ;
+		
+		consoleRankOutput.printf(format, type,AMOUNT_STATEMENT,tradeValue);
+		
+		consoleRankOutput.flush();
+		
+	}
+
+	private static void writedataToConsole(String date, Double value,String transactionType){
+		
+		PrintWriter consoleOutput = new PrintWriter(System.out,true);
+		
+		String format = transactionType.equals("B")  ? "Buy Settlement Date ::: %s, %s, %s\n" : "Sell Settlement Date ::: %s, %s, %s\n";
+		
+		consoleOutput.printf(format, date,AMOUNT_STATEMENT,value);
 		
 	}
 
