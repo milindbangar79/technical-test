@@ -39,14 +39,14 @@ public class TradingReport {
 
 		for (Entry<String, Double> entry : DailyTradingBuilder.USDSettledOutgoing.entrySet()) {
 			String date = entry.getKey();
-			Double value = entry.getValue();
+			String value = dformat.format(entry.getValue());
 			
 			writedataToConsole(date,value,"B");
 		}
 
 		for (Entry<String, Double> entry : DailyTradingBuilder.USDSettledIncoming.entrySet()) {
 			String date = entry.getKey();
-			Double value = entry.getValue();
+			String value = dformat.format(entry.getValue());
 			
 			writedataToConsole(date,value,"S");	
 		}
@@ -97,7 +97,7 @@ public class TradingReport {
 		
 	}
 
-	private static void writedataToConsole(String date, Double value,String transactionType){
+	private static void writedataToConsole(String date, String value,String transactionType){
 		
 		PrintWriter consoleOutput = new PrintWriter(System.out,true);
 		
