@@ -29,6 +29,8 @@ public class DailyTradingModel {
 	// Currency library provided by Java complying to ISO 4217 can also be used for getting the currency definition of passed code
 	// Can be used to validate the decimal fraction allowed for different currencies e.g. AED is 2
 	private String currencyType; 
+	
+	public DailyTradingModel(){}
 
 	public DailyTradingModel(Double pricePerUnit, Double units, Double agreedFX, LocalDate originalSettlementDate,LocalDate instructionDate,
 			String entityName, String transactionType, String currencyType) {

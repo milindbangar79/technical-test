@@ -28,7 +28,7 @@ public class DailyTradingController implements DailyTrading {
 	}
 
 	public static void main(String[] args) throws DailyTradingCustomException {
-
+		
 		log.finer("Instantiate Sample Data for Settlements Including Buy or Sell");
 		
 		String fileName;
