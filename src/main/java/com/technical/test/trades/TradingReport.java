@@ -6,7 +6,6 @@ package com.technical.test.trades;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -70,13 +69,8 @@ public class TradingReport {
 		// list is faster than an array list.
 		List<Entry<String, Double>> rankingList = new LinkedList<Entry<String, Double>>(mapEntries);
 
-		// sorting the List
-		Collections.sort(rankingList, new Comparator<Entry<String, Double>>() {
-
-			public int compare(Entry<String, Double> element1, Entry<String, Double> element2) {
-				return element2.getValue().compareTo(element1.getValue());
-			}
-		});
+		//Use Lambda to compare the List . Possible as Comparator has one abstract method to be qualified as functional interface
+		Collections.sort(rankingList,(element1,element2) -> element2.getValue().compareTo(element1.getValue()));
 		
 		for (Entry<String, Double> entry : rankingList) {
 			String type = entry.getKey();
